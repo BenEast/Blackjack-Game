@@ -13,6 +13,16 @@ public class BlackjackHand {
 		this.cardHand = new LinkedList<BlackjackCard>();
 	}
 
+	public boolean contains(BlackjackCard card) {
+		for(BlackjackCard c : cardHand) {
+			if(c.equals(card)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	public void addCard(BlackjackCard newCard) {
 		cardHand.add(newCard);
 	}
