@@ -13,6 +13,10 @@ public class BlackjackHand {
 		this.cardHand = new LinkedList<BlackjackCard>();
 	}
 
+	public int getHandSize() {
+		return cardHand.size();
+	}
+	
 	public boolean contains(BlackjackCard card) {
 		for(BlackjackCard c : cardHand) {
 			if(c.equals(card)) {
@@ -45,7 +49,11 @@ public class BlackjackHand {
 	}
 
 	public String toString() {
-		return this.cardHand.toString();
+		String output= "";
+		
+		
+		
+		return output;
 	}
 
 }

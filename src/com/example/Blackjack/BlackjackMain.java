@@ -17,8 +17,8 @@ public class BlackjackMain {
 
 		// Give each player 2 cards
 		for (int i = 0; i < 2; ++i) {
-			addCard(this.player);
-			addCard(this.computer);
+			addPlayerCard();
+			addComputerCard();
 		}
 	}
 
@@ -30,6 +30,14 @@ public class BlackjackMain {
 		System.out.println("Computer: " + this.computer);
 	}
 
+	public int getPlayerHandSize() {
+		return player.getHandSize();
+	}
+
+	public int getComputerHandSize() {
+		return computer.getHandSize();
+	}
+
 	public int getPlayerHandWeight() {
 		return this.player.getTotalWeight();
 	}
@@ -38,12 +46,21 @@ public class BlackjackMain {
 		return this.computer.getTotalWeight();
 	}
 
-	public void addCard(BlackjackHand card_hand) {
+	public void addPlayerCard() {
 		BlackjackCard card = this.deck.getNextCard();
 		if (this.player.contains(card) || this.computer.contains(card)) {
-			addCard(card_hand);
+			addPlayerCard();
 		} else {
-			card_hand.addCard(card);
+			this.player.addCard(card);
+		}
+	}
+
+	public void addComputerCard() {
+		BlackjackCard card = this.deck.getNextCard();
+		if (this.player.contains(card) || this.computer.contains(card)) {
+			addComputerCard();
+		} else {
+			this.computer.addCard(card);
 		}
 	}
 
@@ -59,7 +76,7 @@ public class BlackjackMain {
 			String user_input = scan_in.next();
 
 			if (user_input.equalsIgnoreCase("hit")) {
-				addCard(this.player);
+				addPlayerCard();
 			} else if (user_input.equalsIgnoreCase("hold")) {
 				turn_complete = true;
 			} else {
@@ -71,36 +88,34 @@ public class BlackjackMain {
 		scan_in.close();
 	}
 
+	public String displayPlayerHand() {
+		return player.toString();
+	}
+
+	public String displayComputerHand() {
+		return computer.toString();
+	}
+
+	public boolean playerWins() {
+		int pWeight = this.player.getTotalWeight(), cWeight = this.computer.getTotalWeight();
+
+		if (pWeight > 21) {
+			return false;
+		} else if (cWeight > 21) {
+			return true;
+		} else {
+			if (pWeight < cWeight) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+
 	public void takeComputerTurn() {
 		// If computer's total is 16 or less, take another card
 		while (getComputerHandWeight() < 17) {
-			addCard(this.computer);
+			addComputerCard();
 		}
 	}
-
-	public static void main(String[] args) {
-		BlackjackMain game = new BlackjackMain();
-
-		game.takePlayerTurn();
-		game.takeComputerTurn();
-
-		int p_weight = game.getPlayerHandWeight(), c_weight = game.getComputerHandWeight();
-
-		if (p_weight > 21) {
-			System.out.println("you lose");
-		} else if (c_weight > 21) {
-			System.out.println("You win");
-		} else if (p_weight == c_weight) {
-			System.out.println("You tied");
-		} else {
-			if (p_weight > c_weight) {
-				System.out.println("You win");
-			} else {
-				System.out.println("You lose");
-			}
-		}
-
-		System.out.println("\n\n\nThank you for playing!");
-	}
-
 }
