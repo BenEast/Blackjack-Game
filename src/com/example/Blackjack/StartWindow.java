@@ -1,28 +1,15 @@
 package com.example.Blackjack;
 
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JButton;
-import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JTextPane;
-import javax.swing.SwingUtilities;
-
-import java.awt.Component;
-import javax.swing.Box;
-import java.awt.Dimension;
-import javax.swing.JSplitPane;
-import javax.swing.BoxLayout;
 
 public class StartWindow {
 
 	private JFrame frame;
-
-	/**
-	 * @wbp.nonvisual location=479,269
-	 */
 
 	/**
 	 * Launch the application.
@@ -52,34 +39,37 @@ public class StartWindow {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 1000, 700);
+		frame.setBounds(100, 100, 300, 200);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
+		frame.setDefaultLookAndFeelDecorated(true);
+		frame.getContentPane().setLayout(null); // using absolute layout scheme
 
-		Component rigidArea = Box.createRigidArea(new Dimension(410, 20));
-		frame.getContentPane().add(rigidArea);
+		JButton btnQuitGame = new JButton("Quit Game");
+		btnQuitGame.setBounds(157, 75, 117, 25);
+		frame.getContentPane().add(btnQuitGame);
+		btnQuitGame.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+			}
+		});
 
 		JButton btnStartGame = new JButton("Start Game");
+		btnStartGame.setBounds(10, 75, 123, 25);
 		frame.getContentPane().add(btnStartGame);
 		btnStartGame.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				GameWindow game = new GameWindow();
-				game.setVisible(true);
+				new GameWindow();
 				frame.dispose();
 			}
 		});
 
-		JButton btnExitGame = new JButton("Exit Game");
-		frame.getContentPane().add(btnExitGame);
-		btnExitGame.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frame.dispose();
-			}
-		});
+		JLabel lblBlackjack = new JLabel("      Blackjack");
+		lblBlackjack.setBounds(99, 21, 175, 23);
+		frame.getContentPane().add(lblBlackjack);
 
-		Component rigidArea_1 = Box.createRigidArea(new Dimension(410, 20));
-		frame.getContentPane().add(rigidArea_1);
-
+		frame.setVisible(true);
 	}
 
 }

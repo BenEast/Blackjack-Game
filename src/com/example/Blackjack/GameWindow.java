@@ -1,30 +1,19 @@
 package com.example.Blackjack;
 
 import java.awt.EventQueue;
-import java.awt.Window;
-
 import javax.swing.JFrame;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JLabel;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.Component;
-import javax.swing.Box;
-import java.awt.Dimension;
 import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 
 public class GameWindow {
 
 	private JFrame frame;
 	private BlackjackMain game;
-	private String totalPHandWeight;
-	private String currentPHand;
+	private HashMap<String, JLabel> playerCardLabels;
+
 	/**
 	 * Launch the application.
 	 */
@@ -46,21 +35,34 @@ public class GameWindow {
 	 */
 	public GameWindow() {
 		this.game = new BlackjackMain();
-		updatePHandWeight();
-		updateCurrentPHand();
+		this.playerCardLabels = new HashMap<String, JLabel>();
 		initialize();
 	}
 
-	public void updatePHandWeight() {
-		this.totalPHandWeight = Integer.toString(game.getPlayerHandWeight());
+	public GameWindow(BlackjackMain g) {
+		this.game = g;
+		this.game.resetHands();
+		this.playerCardLabels = new HashMap<String, JLabel>();
+		initialize();
 	}
-	
-	public void updateCurrentPHand() {
-		this.currentPHand = game.displayPlayerHand();
-	}
-	
-	public void setVisible(boolean value) {
-		frame.setVisible(value);
+
+	// Generates a series of labels to represent each card in the player's hand
+	private void makePlayerCardLabels() {
+		int yVal = 300; // the y value of the label in the pane
+
+		for (String card : game.displayPlayerHand().split("\n")) {
+			if (!playerCardLabels.containsKey(card)) {
+				JLabel lblCard = new JLabel(card);
+				lblCard.setBounds(23, yVal, 550, 14);
+				frame.getContentPane().add(lblCard);
+
+				// store the label in case we need it again
+				playerCardLabels.put(card, lblCard);
+			}
+
+			yVal += 15; // always increment to ensure the labels are properly
+						// spaced
+		}
 	}
 
 	/**
@@ -68,82 +70,53 @@ public class GameWindow {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 1000, 700);
+		frame.setBounds(100, 100, 600, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
-		gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-				0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		frame.getContentPane().setLayout(gridBagLayout);
-		
-		JButton btnHit = new JButton("Hit");
-		GridBagConstraints gbc_btnHit = new GridBagConstraints();
-		gbc_btnHit.insets = new Insets(0, 0, 5, 5);
-		gbc_btnHit.gridx = 1;
-		gbc_btnHit.gridy = 9;
-		frame.getContentPane().add(btnHit, gbc_btnHit);
-		btnHit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				game.addPlayerCard();
-				updatePHandWeight();
-				updateCurrentPHand();
-				
-				// we need to update what's displayed in the current frame
-			}
-		});
+		frame.setDefaultLookAndFeelDecorated(true);
+		frame.getContentPane().setLayout(null); // using absolute layout scheme
+
+		makePlayerCardLabels();
 
 		JButton btnHold = new JButton("Hold");
-		GridBagConstraints gbc_btnHold = new GridBagConstraints();
-		gbc_btnHold.insets = new Insets(0, 0, 5, 5);
-		gbc_btnHold.gridx = 1;
-		gbc_btnHold.gridy = 10;
-		frame.getContentPane().add(btnHold, gbc_btnHold);
+		btnHold.setBounds(59, 73, 89, 23);
+		frame.getContentPane().add(btnHold);
 		btnHold.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				game.takeComputerTurn();
-
-				EndWindow end = new EndWindow(game);
-				end.setVisible(true);
+				new EndWindow(game);
 				frame.dispose();
 			}
 		});
 
-		Component rigidArea = Box.createRigidArea(new Dimension(50, 20));
-		GridBagConstraints gbc_rigidArea = new GridBagConstraints();
-		gbc_rigidArea.insets = new Insets(0, 0, 0, 5);
-		gbc_rigidArea.gridx = 0;
-		gbc_rigidArea.gridy = 18;
-		frame.getContentPane().add(rigidArea, gbc_rigidArea);
+		JLabel lblPlayerscore = new JLabel("Player Score: " + Integer.toString(game.getPlayerHandWeight()));
+		lblPlayerscore.setBounds(23, 280, 550, 14);
+		frame.getContentPane().add(lblPlayerscore);
 
-		JLabel lblHandTotal = new JLabel("Hand Total:");
-		GridBagConstraints gbc_lblHandTotal = new GridBagConstraints();
-		gbc_lblHandTotal.insets = new Insets(0, 0, 0, 5);
-		gbc_lblHandTotal.gridx = 1;
-		gbc_lblHandTotal.gridy = 18;
-		frame.getContentPane().add(lblHandTotal, gbc_lblHandTotal);
+		JLabel lblComputerscore = new JLabel("Comptuer Score: ?");
+		lblComputerscore.setBounds(23, 240, 550, 14);
+		frame.getContentPane().add(lblComputerscore);
 
-		JLabel lblPlayerweight = new JLabel(totalPHandWeight);
-		GridBagConstraints gbc_lblPlayerweight = new GridBagConstraints();
-		gbc_lblPlayerweight.insets = new Insets(0, 0, 0, 5);
-		gbc_lblPlayerweight.gridx = 2;
-		gbc_lblPlayerweight.gridy = 18;
-		frame.getContentPane().add(lblPlayerweight, gbc_lblPlayerweight);
+		JButton btnHit = new JButton("Hit");
+		btnHit.setBounds(59, 39, 89, 23);
+		frame.getContentPane().add(btnHit);
+		btnHit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				game.addPlayerCard();
 
-		Component rigidArea_1 = Box.createRigidArea(new Dimension(200, 20));
-		GridBagConstraints gbc_rigidArea_1 = new GridBagConstraints();
-		gbc_rigidArea_1.insets = new Insets(0, 0, 0, 5);
-		gbc_rigidArea_1.gridx = 4;
-		gbc_rigidArea_1.gridy = 18;
-		frame.getContentPane().add(rigidArea_1, gbc_rigidArea_1);
+				// update displays of scores
+				lblPlayerscore.setText("Player Score: " + Integer.toString(game.getPlayerHandWeight()));
+				makePlayerCardLabels();
+				
+				// Hide the button if the player meets or exceeds 21 points
+				if(game.getPlayerHandWeight() > 21) {
+					btnHit.setVisible(false);
+				}
+				frame.repaint();
+			}
+		});
 
-		JLabel lblCurrenthand = new JLabel(currentPHand);
-		GridBagConstraints gbc_lblCurrenthand = new GridBagConstraints();
-		gbc_lblCurrenthand.gridx = 6;
-		gbc_lblCurrenthand.gridy = 18;
-		frame.getContentPane().add(lblCurrenthand, gbc_lblCurrenthand);
-
+		frame.setVisible(true);
 	}
-
 }

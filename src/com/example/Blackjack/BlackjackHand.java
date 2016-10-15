@@ -48,12 +48,15 @@ public class BlackjackHand {
 		return total;
 	}
 
+	@Override
 	public String toString() {
-		String output= "";
+		String result = "";
+		for (BlackjackCard c : this.cardHand) {
+			result += c.toString() + "\n";
+		}
 		
-		
-		
-		return output;
+		// remove the last delimiter from the string
+		return result;
 	}
 
 }

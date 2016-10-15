@@ -1,7 +1,5 @@
 package com.example.Blackjack;
 
-import java.util.Scanner;
-
 /**
  * @author Benjamin East
  *
@@ -12,14 +10,7 @@ public class BlackjackMain {
 
 	public BlackjackMain() {
 		this.deck = new CardDeck();
-		this.player = new BlackjackHand();
-		this.computer = new BlackjackHand();
-
-		// Give each player 2 cards
-		for (int i = 0; i < 2; ++i) {
-			addPlayerCard();
-			addComputerCard();
-		}
+		resetHands();
 	}
 
 	/*
@@ -31,13 +22,13 @@ public class BlackjackMain {
 	}
 
 	public int getPlayerHandSize() {
-		return player.getHandSize();
+		return this.player.getHandSize();
 	}
-
+	
 	public int getComputerHandSize() {
-		return computer.getHandSize();
+		return this.computer.getHandSize();
 	}
-
+	
 	public int getPlayerHandWeight() {
 		return this.player.getTotalWeight();
 	}
@@ -46,11 +37,34 @@ public class BlackjackMain {
 		return this.computer.getTotalWeight();
 	}
 
+	public void resetHands() {
+		this.player = new BlackjackHand();
+		this.computer = new BlackjackHand();
+		
+		for(int i = 0; i < 2; ++i) {
+			addPlayerCard();
+			addComputerCard();
+		}
+	}
+
 	public void addPlayerCard() {
 		BlackjackCard card = this.deck.getNextCard();
 		if (this.player.contains(card) || this.computer.contains(card)) {
 			addPlayerCard();
 		} else {
+			if (card.isAce()) {
+				// If a value of 11 makes the player lose, force the card to be
+				// worth 1
+				if (getPlayerHandWeight() + 11 > 21) {
+					card.setWeight(1);
+				} else {
+					// ask the player if the card should be 1 or 11
+					int inputWeight = 11;
+
+					card.setWeight(inputWeight);
+				}
+			}
+
 			this.player.addCard(card);
 		}
 	}
@@ -60,32 +74,16 @@ public class BlackjackMain {
 		if (this.player.contains(card) || this.computer.contains(card)) {
 			addComputerCard();
 		} else {
+			// Computer always takes greedy route for aces
+			if(card.isAce()) {
+				if(getComputerHandWeight() + 11 > 21) {
+					card.setWeight(1);
+				} else {
+					card.setWeight(11);
+				}
+			}
 			this.computer.addCard(card);
 		}
-	}
-
-	public void takePlayerTurn() {
-		boolean turn_complete = false;
-		Scanner scan_in = new Scanner(System.in);
-
-		while (!turn_complete) {
-			System.out.println("Total hand value: " + getPlayerHandWeight());
-			System.out.println("Type \"hit\" to receive another card.");
-			System.out.println("Type \"hold\" to keep your current hand.");
-
-			String user_input = scan_in.next();
-
-			if (user_input.equalsIgnoreCase("hit")) {
-				addPlayerCard();
-			} else if (user_input.equalsIgnoreCase("hold")) {
-				turn_complete = true;
-			} else {
-				System.out.println("Invalid input. Please input \"hit\" or \"hold\"");
-				System.out.print("\n\n\n\n\n\n\n\n\n\n");
-			}
-		}
-
-		scan_in.close();
 	}
 
 	public String displayPlayerHand() {
@@ -104,7 +102,7 @@ public class BlackjackMain {
 		} else if (cWeight > 21) {
 			return true;
 		} else {
-			if (pWeight < cWeight) {
+			if (pWeight > cWeight) {
 				return true;
 			} else {
 				return false;
