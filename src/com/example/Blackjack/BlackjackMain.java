@@ -50,15 +50,8 @@ public class BlackjackMain {
 				if (getPlayerHandWeight() + 11 > 21) {
 					card.setWeight(1);
 				} else {
-					AceWindow ace = new AceWindow();
-					boolean choiceMade = false;
-					
-					while (!choiceMade) {
-						if (ace.buttonPressed()) {
-							card.setWeight(ace.getAceVal());
-							choiceMade = true;
-						}
-					}
+					// handle ace
+					card.setWeight(11);
 				}
 			}
 
