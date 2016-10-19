@@ -95,7 +95,7 @@ public class AceWindow {
 		lblAcechoice.setBounds(95, 53, 294, 14);
 		frame.getContentPane().add(lblAcechoice);
 
-		//frame.setVisible(true);
+		frame.setVisible(true);
 	}
 
 }
