@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import javax.swing.JLayeredPane;
 
 public class GameWindow {
 
@@ -37,13 +38,16 @@ public class GameWindow {
 		this.game = new BlackjackMain();
 		this.playerCardLabels = new HashMap<String, JLabel>();
 		initialize();
+
 	}
 
 	public GameWindow(BlackjackMain g) {
 		this.game = g;
-		this.game.resetHands();
 		this.playerCardLabels = new HashMap<String, JLabel>();
+
+		this.game.resetHands();
 		initialize();
+
 	}
 
 	// Generates a series of labels to represent each card in the player's hand
@@ -93,7 +97,7 @@ public class GameWindow {
 		lblPlayerscore.setBounds(23, 280, 550, 14);
 		frame.getContentPane().add(lblPlayerscore);
 
-		JLabel lblComputerscore = new JLabel("Comptuer Score: ?");
+		JLabel lblComputerscore = new JLabel("Computer Score: ?");
 		lblComputerscore.setBounds(23, 240, 550, 14);
 		frame.getContentPane().add(lblComputerscore);
 
@@ -108,13 +112,14 @@ public class GameWindow {
 				// update displays of scores
 				lblPlayerscore.setText("Player Score: " + Integer.toString(game.getPlayerHandWeight()));
 				makePlayerCardLabels();
-				
+
 				// Hide the button if the player meets or exceeds 21 points
-				if(game.getPlayerHandWeight() > 21) {
+				if (game.getPlayerHandWeight() > 21) {
 					btnHit.setVisible(false);
 				}
 				frame.repaint();
 			}
+
 		});
 
 		frame.setVisible(true);

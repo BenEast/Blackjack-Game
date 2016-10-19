@@ -13,22 +13,14 @@ public class BlackjackMain {
 		resetHands();
 	}
 
-	/*
-	 * Outputs the info in the "hands" to the console
-	 */
-	public void printHands() {
-		System.out.println("Player: " + this.player);
-		System.out.println("Computer: " + this.computer);
-	}
-
 	public int getPlayerHandSize() {
 		return this.player.getHandSize();
 	}
-	
+
 	public int getComputerHandSize() {
 		return this.computer.getHandSize();
 	}
-	
+
 	public int getPlayerHandWeight() {
 		return this.player.getTotalWeight();
 	}
@@ -40,8 +32,8 @@ public class BlackjackMain {
 	public void resetHands() {
 		this.player = new BlackjackHand();
 		this.computer = new BlackjackHand();
-		
-		for(int i = 0; i < 2; ++i) {
+
+		for (int i = 0; i < 2; ++i) {
 			addPlayerCard();
 			addComputerCard();
 		}
@@ -58,10 +50,15 @@ public class BlackjackMain {
 				if (getPlayerHandWeight() + 11 > 21) {
 					card.setWeight(1);
 				} else {
-					// ask the player if the card should be 1 or 11
-					int inputWeight = 11;
-
-					card.setWeight(inputWeight);
+					AceWindow ace = new AceWindow();
+					boolean choiceMade = false;
+					
+					while (!choiceMade) {
+						if (ace.buttonPressed()) {
+							card.setWeight(ace.getAceVal());
+							choiceMade = true;
+						}
+					}
 				}
 			}
 
@@ -75,8 +72,8 @@ public class BlackjackMain {
 			addComputerCard();
 		} else {
 			// Computer always takes greedy route for aces
-			if(card.isAce()) {
-				if(getComputerHandWeight() + 11 > 21) {
+			if (card.isAce()) {
+				if (getComputerHandWeight() + 11 > 21) {
 					card.setWeight(1);
 				} else {
 					card.setWeight(11);

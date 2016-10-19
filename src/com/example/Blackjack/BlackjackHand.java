@@ -12,7 +12,7 @@ public class BlackjackHand {
 	public BlackjackHand() {
 		this.cardHand = new LinkedList<BlackjackCard>();
 	}
-
+	
 	public int getHandSize() {
 		return cardHand.size();
 	}
@@ -30,9 +30,9 @@ public class BlackjackHand {
 	public void addCard(BlackjackCard newCard) {
 		cardHand.add(newCard);
 	}
-
+	
 	public void clearHand() {
-		this.cardHand = new LinkedList<BlackjackCard>();
+		this.cardHand.clear();
 	}
 
 	/*
