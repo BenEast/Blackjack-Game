@@ -98,6 +98,8 @@ public class EndWindow {
 				frame.dispose();
 			}
 		});
+		
+		frame.setVisible(true);
 	}
 
 }

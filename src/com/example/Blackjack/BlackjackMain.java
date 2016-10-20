@@ -150,12 +150,4 @@ public class BlackjackMain {
 			addComputerCard();
 		}
 	}
-	
-	/**
-	*	Runs the program by instantiating a StartWindow object.
-	*/
-	public static void main(String[] args) {
-		StartWindow start = new StartWindow();
-	}
-	
 }
