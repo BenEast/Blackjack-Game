@@ -10,31 +10,27 @@ import java.util.LinkedList;
  *
  */
 public class Hand {
-	protected LinkedList<BlackjackCard> cardHand;
+	private LinkedList<Card> cardHand;
 
+	/**
+	 * Constructs an empty linked list to store Card objects
+	 */
 	public Hand() {
-		this.cardHand = new LinkedList<BlackjackCard>();
+		this.cardHand = new LinkedList<Card>();
 	}
 
-	public void addCard(BlackjackCard newCard) {
+	/**
+	 * @param newCard
+	 *            The new card to be added to the hand.
+	 */
+	public void addCard(Card newCard) {
 		cardHand.add(newCard);
 	}
 
-	public void clearHand() {
-		this.cardHand = new LinkedList<BlackjackCard>();
-	}
-
-	/*
-	 * @return Returns the total weight of the cards in the hand.
+	/**
+	 * Clears all of the cards from this.cardHand
 	 */
-	public int getTotalWeight() {
-		int total = 0;
-
-		for (BlackjackCard c : this.cardHand) {
-			total += c.getWeight();
-		}
-
-		return total;
+	public void clearHand() {
+		this.cardHand.clear();
 	}
-
 }

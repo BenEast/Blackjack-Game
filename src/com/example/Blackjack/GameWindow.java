@@ -13,7 +13,9 @@ public class GameWindow {
 
 	private JFrame frame;
 	private BlackjackMain game;
-	private HashMap<String, JLabel> playerCardLabels;
+	private HashMap<String, JLabel> playerCardLabels; // Holds labels of each
+														// card in the player's
+														// hand
 
 	/**
 	 * Launch the application.
@@ -41,6 +43,12 @@ public class GameWindow {
 
 	}
 
+	/**
+	 * Creates a new GameWindow instance.
+	 * 
+	 * @param g
+	 *            The current blackjack game instance.
+	 */
 	public GameWindow(BlackjackMain g) {
 		this.game = g;
 		this.playerCardLabels = new HashMap<String, JLabel>();
@@ -50,7 +58,9 @@ public class GameWindow {
 
 	}
 
-	// Generates a series of labels to represent each card in the player's hand
+	/**
+	 * Generates a series of labels to represent each card in the player's hand
+	 */
 	private void makePlayerCardLabels() {
 		int yVal = 300; // the y value of the label in the pane
 
@@ -87,6 +97,7 @@ public class GameWindow {
 		btnHold.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// Take the computer's turn and compare final scores
 				game.takeComputerTurn();
 				new EndWindow(game);
 				frame.dispose();

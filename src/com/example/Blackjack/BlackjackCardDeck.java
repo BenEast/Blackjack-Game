@@ -7,17 +7,20 @@ import java.util.Random;
  * @author Benjamin East
  *
  */
-public class CardDeck {
+public class BlackjackCardDeck {
 
 	private LinkedList<BlackjackCard> deck;
 
-	public CardDeck() {
+	/**
+	 * Constructs a new CardDeck object.
+	 */
+	public BlackjackCardDeck() {
 		this.deck = new LinkedList<BlackjackCard>();
 		resetDeck();
 	}
 
 	/*
-	 * This function resets the deck to it's original, full state
+	 * This function resets the deck to it's original, full state.
 	 */
 	private void resetDeck() {
 		String[] suits = { "Hearts", "Diamonds", "Clubs", "Spades" };
@@ -28,23 +31,24 @@ public class CardDeck {
 		}
 	}
 
-	/*
-	 * @return Returns a random BlackjackCard that is in the deck. Randomly
-	 * chooses an index in the deck and returns that card. The card is removed
-	 * from the deck.
+	/**
+	 * Randomly chooses a card from the deck, removes it from the deck, and
+	 * returns the card.
+	 * 
+	 * @return Returns a randomly chosen Blackjackcard from the deck.
 	 */
 	public BlackjackCard getNextCard() {
 		Random rand = new Random();
-		
+
 		int randInt = rand.nextInt(this.deck.size());
 
 		BlackjackCard temp = this.deck.get(randInt);
 		this.deck.remove(temp);
 
-		if(this.deck.size() == 0) {
+		if (this.deck.size() == 0) {
 			resetDeck();
 		}
-		
+
 		return temp;
 	}
 

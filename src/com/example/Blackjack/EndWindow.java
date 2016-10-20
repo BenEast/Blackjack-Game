@@ -10,7 +10,7 @@ import javax.swing.JButton;
 public class EndWindow {
 
 	private JFrame frame;
-	private static BlackjackMain game;
+	private static BlackjackMain game; // the active game instance
 
 	/**
 	 * Launch the application.
@@ -28,13 +28,19 @@ public class EndWindow {
 		});
 	}
 
+	/**
+	 * Initailize a new game if none is passed
+	 */
 	public EndWindow() {
 		game = new BlackjackMain();
 		initialize();
 	}
 
 	/**
-	 * Create the application.
+	 * Create a new end window
+	 * 
+	 * @param g
+	 *            The current game instance.
 	 */
 	public EndWindow(BlackjackMain g) {
 		game = g;
@@ -92,8 +98,6 @@ public class EndWindow {
 				frame.dispose();
 			}
 		});
-		
-		frame.setVisible(true);
 	}
 
 }

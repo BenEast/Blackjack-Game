@@ -44,6 +44,7 @@ public class StartWindow {
 		frame.setDefaultLookAndFeelDecorated(true);
 		frame.getContentPane().setLayout(null); // using absolute layout scheme
 
+		// Make a quit game button to exit the program.
 		JButton btnQuitGame = new JButton("Quit Game");
 		btnQuitGame.setBounds(157, 75, 117, 25);
 		frame.getContentPane().add(btnQuitGame);
@@ -54,6 +55,7 @@ public class StartWindow {
 			}
 		});
 
+		// Make a start game button to initiate gameplay.
 		JButton btnStartGame = new JButton("Start Game");
 		btnStartGame.setBounds(10, 75, 123, 25);
 		frame.getContentPane().add(btnStartGame);
@@ -65,11 +67,10 @@ public class StartWindow {
 			}
 		});
 
+		// title label for the start screen
 		JLabel lblBlackjack = new JLabel("      Blackjack");
 		lblBlackjack.setBounds(99, 21, 175, 23);
 		frame.getContentPane().add(lblBlackjack);
-
-		frame.setVisible(true);
 	}
 
 }
